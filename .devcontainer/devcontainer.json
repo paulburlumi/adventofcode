@@ -1,0 +1,55 @@
+{
+	"image": "mcr.microsoft.com/devcontainers/go",
+    "features": {
+		"ghcr.io/devcontainers/features/docker-outside-of-docker:1": {},
+        "ghcr.io/guiyomh/features/mage:0": {}
+    },
+	// Set *default* container specific settings.json values on container create.
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"terminal.integrated.defaultProfile.linux": "bash",
+    			// https://github.com/golang/vscode-go/wiki/settings
+				"go.lintTool": "golangci-lint",
+				"go.lintFlags": [
+					"--fast"
+				],
+				"go.buildTags": "mage",
+				"[go]": {
+					"editor.tabSize":      4,
+					"editor.formatOnSave": true,
+					"editor.codeActionsOnSave": {
+						"source.organizeImports": true
+					}
+				},
+				"[go.mod]": {
+					"editor.formatOnSave": true,
+					"editor.codeActionsOnSave": {
+						"source.organizeImports": true
+					}
+				},
+				// https://github.com/golang/tools/blob/master/gopls/doc/settings.md
+				"gopls": {
+					// Add parameter placeholders when completing a function.
+					"ui.completion.usePlaceholders": true,
+					// Enforce a stricter format than gofmt, while being backwards compatible.
+					"formatting.gofumpt": true
+				}
+			},
+			// Add the IDs of extensions you want installed when the container is created.
+			"extensions": [
+                "eamodio.gitlens",
+                "davidanson.vscode-markdownlint",
+                "bierner.markdown-mermaid",
+				"bpruitt-goddard.mermaid-markdown-syntax-highlighting"
+			]
+		}
+	},
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [],
+	"postStartCommand": {
+		"git config": "git config --global --add safe.directory ${containerWorkspaceFolder}",
+		"go mod init": "go mod init example.com/m && go mod tidy",
+		"mage toolInstall": "mage toolInstall"
+	}
+}
